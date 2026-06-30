@@ -1,0 +1,87 @@
+{
+  "permissions": {
+    "allow": [
+      "Read",
+      "Write",
+      "Edit",
+      "MultiEdit",
+      "Bash",
+      "Glob",
+      "Grep",
+      "WebFetch",
+      "WebSearch",
+      "TodoRead",
+      "TodoWrite",
+      "Bash(gh pr view*)",
+      "Bash(gh pr checks*)",
+      "Bash(gh repo view*)",
+      "Bash(gh api*)",
+      "Bash(gh auth status*)",
+      "Bash(git add*)",
+      "Bash(git commit*)",
+      "Bash(git push*)",
+      "Bash(git branch*)",
+      "Bash(git status*)",
+      "Bash(git diff*)",
+      "Bash(git log*)"
+    ]
+  },
+  "enabledPlugins": {
+    "cc_chrome_devtools_mcp_skill@cc_chrome_devtools_mcp_skill-plugin-marketplace": true
+  },
+  "alwaysThinkingEnabled": true,
+  "effortLevel": "medium",
+  "tui": "fullscreen",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "set-agent-status.sh '🟢 working'"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "set-agent-status.sh '🟢 working'"
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "set-agent-status.sh '🟡 waiting'"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "set-agent-status.sh '✅ done'"
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "set-agent-status.sh '✅ done'"
+          }
+        ]
+      }
+    ]
+  }
+}
