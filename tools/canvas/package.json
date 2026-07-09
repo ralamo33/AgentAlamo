@@ -1,0 +1,6 @@
+{
+  "name": "canvas",
+  "version": "0.1.0",
+  "type": "module",
+  "bin": { "canvas": "./bin/canvas" }
+}

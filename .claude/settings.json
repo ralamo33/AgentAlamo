@@ -31,57 +31,5 @@
   },
   "alwaysThinkingEnabled": true,
   "effortLevel": "medium",
-  "tui": "fullscreen",
-  "hooks": {
-    "PreToolUse": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "set-agent-status.sh '🟢 working'"
-          }
-        ]
-      }
-    ],
-    "PostToolUse": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "set-agent-status.sh '🟢 working'"
-          }
-        ]
-      }
-    ],
-    "Notification": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "set-agent-status.sh '🟡 waiting'"
-          }
-        ]
-      }
-    ],
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "set-agent-status.sh '✅ done'"
-          }
-        ]
-      }
-    ],
-    "SubagentStop": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "set-agent-status.sh '✅ done'"
-          }
-        ]
-      }
-    ]
-  }
+  "tui": "fullscreen"
 }

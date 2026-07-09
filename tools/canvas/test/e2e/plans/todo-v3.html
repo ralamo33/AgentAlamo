@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Todo App</title>
+  <style>
+    body { font-family: system-ui, sans-serif; padding: 40px; max-width: 600px; background: #eff6ff; }
+    h1 { font-size: 2.2em; font-weight: 800; color: #1e40af; margin-bottom: 24px; }
+    .card {
+      background: #fff; border-radius: 16px; padding: 24px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.04);
+    }
+    .task-list { display: flex; flex-direction: column; }
+    .task {
+      display: flex; align-items: center; gap: 12px;
+      padding: 14px 0; border-bottom: 1px solid #f1f5f9; font-size: 15px;
+    }
+    .task:last-of-type { border-bottom: none; }
+    .task input[type="checkbox"] { width: 18px; height: 18px; accent-color: #3b82f6; }
+    .task.done { color: #9ca3af; text-decoration: line-through; }
+    .add-btn {
+      margin-top: 20px; padding: 12px 24px;
+      background: #3b82f6; color: #fff; border: none;
+      border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer;
+      width: 100%;
+    }
+    .stats { margin-top: 16px; font-size: 13px; color: #64748b; text-align: center; }
+  </style>
+</head>
+<body>
+  <h1>Todo List</h1>
+  <div class="card">
+    <div class="task-list">
+      <div class="task"><input type="checkbox"> Buy groceries</div>
+      <div class="task"><input type="checkbox"> Walk the dog</div>
+      <div class="task done"><input type="checkbox" checked> Write quarterly report</div>
+      <div class="task"><input type="checkbox"> Schedule dentist appointment</div>
+      <div class="task"><input type="checkbox"> Review pull requests</div>
+    </div>
+    <button class="add-btn">+ Add Task</button>
+    <div class="stats">1 of 5 tasks completed</div>
+  </div>
+</body>
+</html>

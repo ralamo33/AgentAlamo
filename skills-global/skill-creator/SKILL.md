@@ -59,7 +59,13 @@ At a high level, the process of creating a skill goes like this:
 
     Check available MCPs - if useful for research (searching docs, finding similar skills, looking up best practices), research in parallel via subagents if available, otherwise inline. Come prepared with context to reduce burden on the user.
 
+    ### Check existing skills
+
+    Before writing the new skill, read all `SKILL.md` files in `/Users/ryan/Workspace/AgentRalamo/skills-global/`. Consider whether any existing skills should reference or defer to the new skill (or vice versa). If so, tell the user which skills you'd update and why, and wait for their approval before proceeding.
+
     ### Write the SKILL.md
+
+    **Output location**: Create all new skills in `/Users/ryan/Workspace/AgentRalamo/skills-global/`. Each skill gets its own directory there (e.g., `/Users/ryan/Workspace/AgentRalamo/skills-global/my-skill/SKILL.md`). Do NOT create skills in `~/.claude/skills/` or any other location.
 
     Based on the user interview, fill in these components:
 
@@ -136,7 +142,9 @@ At a high level, the process of creating a skill goes like this:
 
                             ### Writing Style
 
-                            Try to explain to the model why things are important in lieu of heavy-handed musty MUSTs. Use theory of mind and try to make the skill general and not super-narrow to specific examples. Start by writing a draft and then look at it with fresh eyes and improve it.
+                            **Brevity is paramount.** Skills should be as short as possible — a human should be able to read the entire SKILL.md in under a minute. Strip out anything an LLM can infer from context. No lengthy explanations, no exhaustive examples, no hand-holding. If a section doesn't change the agent's behavior, delete it.
+
+                            Explain *why* things matter rather than using heavy-handed MUSTs. Make skills general, not narrow to specific examples. Write a draft, then cut it in half.
 
                             ### Test Cases
 
