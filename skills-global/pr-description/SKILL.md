@@ -5,7 +5,7 @@ description: Generate a PR title and description. Use whenever creating or editi
 
 # PR Description
 
-Read the diff to understand the full scope. Generate a title and body.
+Do NOT ask the user what the description should be. Autonomously read the diff (`git diff main...HEAD`), understand the full scope of changes, and generate the title and body yourself.
 
 ## Title
 

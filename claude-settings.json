@@ -16,6 +16,7 @@
     "allow": [
       "Wc *",
       "Mkdir *",
+      "Bash(uv *)",
       "Read",
       "Glob",
       "Grep",
