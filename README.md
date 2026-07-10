@@ -1,8 +1,9 @@
-# Contains everything to setup a new computer & track things
-- startup script to download all of my agent repos from github (canvas)
-- script to link the local directory of skills to the ~/.agents and ~/.claude files
-- scripts/alias files and a cli command to get what i need to paste into ~/.bashrc or ~/.zshrc to connect them
-- my nvim config folder, and a script to symlink it to the needed directory
+# A git repo to track your skills, hooks & tools
+- run ./setup.sh to symlink skills, tools, & hooks to your global claude file
+- contains a tool to render claude plans as an editable webpage
+- contains several skills i found useful
+- contains hooks to rename tabs
 
-- skills_global & skills_local directory to hold skills that are cross & only associated with one project
-- skills_local is meant to hold custom skills that you only want for a specific project & on this computer, and not in your general setup
+## Structure
+- use skills-global for skills you want to share across work & personal
+- use skills-local for skills you do not want to git commit

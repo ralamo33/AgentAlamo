@@ -61,11 +61,11 @@ At a high level, the process of creating a skill goes like this:
 
     ### Check existing skills
 
-    Before writing the new skill, read all `SKILL.md` files in `/Users/ryan/Workspace/AgentRalamo/skills-global/`. Consider whether any existing skills should reference or defer to the new skill (or vice versa). If so, tell the user which skills you'd update and why, and wait for their approval before proceeding.
+    Before writing the new skill, read all `SKILL.md` files in `/Users/ryan/Workspace/AgentAlamo/skills-global/`. Consider whether any existing skills should reference or defer to the new skill (or vice versa). If so, tell the user which skills you'd update and why, and wait for their approval before proceeding.
 
     ### Write the SKILL.md
 
-    **Output location**: Create all new skills in `/Users/ryan/Workspace/AgentRalamo/skills-global/`. Each skill gets its own directory there (e.g., `/Users/ryan/Workspace/AgentRalamo/skills-global/my-skill/SKILL.md`). Do NOT create skills in `~/.claude/skills/` or any other location.
+    **Output location**: Create all new skills in `/Users/ryan/Workspace/AgentAlamo/skills-global/`. Each skill gets its own directory there (e.g., `/Users/ryan/Workspace/AgentAlamo/skills-global/my-skill/SKILL.md`). Do NOT create skills in `~/.claude/skills/` or any other location.
 
     Based on the user interview, fill in these components:
 

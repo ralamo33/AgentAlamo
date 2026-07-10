@@ -22,31 +22,6 @@ err()    { echo -e "  ${RED}✗${RESET}  $*"; }
 info()   { echo -e "     $*"; }
 
 
-# ── symlink settings ──────────────────────────────────────────────────
-header "Linking settings"
-SETTINGS_SRC="$REPO_DIR/claude-settings.json"
-SETTINGS_DST="$HOME/.claude/settings.json"
-mkdir -p "$HOME/.claude"
-if [[ -L "$SETTINGS_DST" ]]; then
-  existing="$(readlink "$SETTINGS_DST")"
-  if [[ "$existing" == "$SETTINGS_SRC" ]]; then
-    ok "settings.json already linked"
-  else
-    warn "settings.json links to $existing — replacing"
-    rm "$SETTINGS_DST"
-    ln -s "$SETTINGS_SRC" "$SETTINGS_DST"
-    ok "settings.json  →  $SETTINGS_DST"
-  fi
-elif [[ -e "$SETTINGS_DST" ]]; then
-  warn "settings.json exists and is not a symlink — backing up to settings.json.bak"
-  mv "$SETTINGS_DST" "${SETTINGS_DST}.bak"
-  ln -s "$SETTINGS_SRC" "$SETTINGS_DST"
-  ok "settings.json  →  $SETTINGS_DST"
-else
-  ln -s "$SETTINGS_SRC" "$SETTINGS_DST"
-  ok "settings.json  →  $SETTINGS_DST"
-fi
-
 # ── discover skills by source dir ────────────────────────────────────────────
 discover_skills() {
   local src="$1"
@@ -100,11 +75,35 @@ link_skill() {
   ok "$name  →  $link"
 }
 
-# ── install ───────────────────────────────────────────────────────────────────
+# ── choose install mode ──────────────────────────────────────────────────────
+CANVAS_SKILL_NAMES=("canvas" "canvas-html")
+
+header "What would you like to install?"
+echo ""
+info "  1) Canvas skills only (${CANVAS_SKILL_NAMES[*]})"
+info "  2) Skills only"
+info "  3) Skills & zellij tab renaming"
+echo ""
+printf "  Choose [1/2/3] (default: 2): "
+read -r install_choice
+install_choice="${install_choice:-2}"
+
+# ── install skills ───────────────────────────────────────────────────────────
 header "Linking skills"
 
 for skill_dir in "${GLOBAL_SKILLS[@]}"; do
-  info "── $(basename "$skill_dir")  [global]"
+  name="$(basename "$skill_dir")"
+  if [[ "$install_choice" == "1" ]]; then
+    is_canvas=false
+    for cn in "${CANVAS_SKILL_NAMES[@]}"; do
+      [[ "$name" == "$cn" ]] && is_canvas=true && break
+    done
+    if ! $is_canvas; then
+      info "── $name  [global] — skipped"
+      continue
+    fi
+  fi
+  info "── $name  [global]"
   link_skill "$skill_dir" "$GLOBAL_SKILLS_DIR"
 done
 
@@ -113,34 +112,9 @@ for skill_dir in "${LOCAL_SKILLS[@]}"; do
   link_skill "$skill_dir" "$LOCAL_SKILLS_DIR"
 done
 
-# ── hooks ────────────────────────────────────────────────────────────────────
-HOOKS_DIR="$REPO_DIR/hooks"
-BIN_DIR="${HOME}/.local/bin"
-
-if [[ -d "$HOOKS_DIR" ]]; then
-  header "Linking hooks"
-  mkdir -p "$BIN_DIR"
-  for hook in "$HOOKS_DIR"/*.sh; do
-    [[ "$(basename "$hook")" == "hooks-setup.sh" ]] && continue
-    [[ -f "$hook" ]] || continue
-    name="$(basename "$hook")"
-    dst="$BIN_DIR/$name"
-    chmod +x "$hook"
-    if [[ -L "$dst" ]]; then
-      rm "$dst"
-    elif [[ -e "$dst" ]]; then
-      warn "$name — $dst exists and is not a symlink — skipping"
-      continue
-    fi
-    ln -s "$hook" "$dst"
-    ok "$name  →  $dst"
-  done
-
-  if ! echo "$PATH" | tr ':' '\n' | grep -qx "$BIN_DIR"; then
-    echo ""
-    warn "Add $BIN_DIR to your PATH if it isn't already:"
-    info 'export PATH="$HOME/.local/bin:$PATH"'
-  fi
+# ── hooks (only for option 3) ────────────────────────────────────────────────
+if [[ "$install_choice" == "3" ]]; then
+  "$REPO_DIR/setup-zellij.sh"
 fi
 
 # ── tools ────────────────────────────────────────────────────────────────────
