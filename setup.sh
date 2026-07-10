@@ -22,31 +22,6 @@ err()    { echo -e "  ${RED}✗${RESET}  $*"; }
 info()   { echo -e "     $*"; }
 
 
-# ── symlink settings ──────────────────────────────────────────────────
-header "Linking settings"
-SETTINGS_SRC="$REPO_DIR/claude-settings.json"
-SETTINGS_DST="$HOME/.claude/settings.json"
-mkdir -p "$HOME/.claude"
-if [[ -L "$SETTINGS_DST" ]]; then
-  existing="$(readlink "$SETTINGS_DST")"
-  if [[ "$existing" == "$SETTINGS_SRC" ]]; then
-    ok "settings.json already linked"
-  else
-    warn "settings.json links to $existing — replacing"
-    rm "$SETTINGS_DST"
-    ln -s "$SETTINGS_SRC" "$SETTINGS_DST"
-    ok "settings.json  →  $SETTINGS_DST"
-  fi
-elif [[ -e "$SETTINGS_DST" ]]; then
-  warn "settings.json exists and is not a symlink — backing up to settings.json.bak"
-  mv "$SETTINGS_DST" "${SETTINGS_DST}.bak"
-  ln -s "$SETTINGS_SRC" "$SETTINGS_DST"
-  ok "settings.json  →  $SETTINGS_DST"
-else
-  ln -s "$SETTINGS_SRC" "$SETTINGS_DST"
-  ok "settings.json  →  $SETTINGS_DST"
-fi
-
 # ── discover skills by source dir ────────────────────────────────────────────
 discover_skills() {
   local src="$1"
