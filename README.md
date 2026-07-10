@@ -6,4 +6,4 @@
 
 ## Structure
 - use skills-global for skills you want to share across work & personal
-- use skills-local for skills you do not want to git commit
+- use skills-local for skills you do not want to automatically load on setup
