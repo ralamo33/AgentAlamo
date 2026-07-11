@@ -117,6 +117,11 @@ if [[ "$install_choice" == "3" ]]; then
   "$REPO_DIR/setup-zellij.sh"
 fi
 
+# -- config (only for option 3)--------------------------
+if [[ "$install_choice" == "3" ]]; then
+# TODO symlink all config files to ~/.config/...  
+fi
+
 # ── tools ────────────────────────────────────────────────────────────────────
 TOOLS_DIR="$REPO_DIR/tools"
 
