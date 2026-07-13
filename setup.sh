@@ -82,7 +82,7 @@ header "What would you like to install?"
 echo ""
 info "  1) Canvas skills only (${CANVAS_SKILL_NAMES[*]})"
 info "  2) Skills only"
-info "  3) Skills & zellij tab renaming"
+info "  3) Everything"
 echo ""
 printf "  Choose [1/2/3] (default: 2): "
 read -r install_choice
@@ -116,6 +116,11 @@ done
 if [[ "$install_choice" == "3" ]]; then
   "$REPO_DIR/setup-zellij.sh"
 fi
+
+# -- other symlinks -----------------------------------------------------------
+ln $REPO_DIR/CLAUDE.md $HOME/.claude/CLAUDE.md
+ln $REPO_DIR/claude-settings.json $HOME/.claude/settings.json
+
 
 # ── tools ────────────────────────────────────────────────────────────────────
 TOOLS_DIR="$REPO_DIR/tools"
