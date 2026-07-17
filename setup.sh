@@ -107,10 +107,16 @@ for skill_dir in "${GLOBAL_SKILLS[@]}"; do
   link_skill "$skill_dir" "$GLOBAL_SKILLS_DIR"
 done
 
-for skill_dir in "${LOCAL_SKILLS[@]}"; do
-  info "── $(basename "$skill_dir")  [local]"
-  link_skill "$skill_dir" "$LOCAL_SKILLS_DIR"
-done
+if [[ "$install_choice" == "2" || "$install_choice" == "3" ]]; then
+  for skill_dir in "${LOCAL_SKILLS[@]}"; do
+    info "── $(basename "$skill_dir")  [local]"
+    link_skill "$skill_dir" "$LOCAL_SKILLS_DIR"
+  done
+else
+  for skill_dir in "${LOCAL_SKILLS[@]}"; do
+    info "── $(basename "$skill_dir")  [local] — skipped"
+  done
+fi
 
 # ── hooks (only for option 3) ────────────────────────────────────────────────
 if [[ "$install_choice" == "3" ]]; then
@@ -118,12 +124,14 @@ if [[ "$install_choice" == "3" ]]; then
 fi
 
 # -- other symlinks -----------------------------------------------------------
-ln $REPO_DIR/CLAUDE.md $HOME/.claude/CLAUDE.md
-ln $REPO_DIR/claude-settings.json $HOME/.claude/settings.json
+ln -sf "$REPO_DIR/CLAUDE.md" "$HOME/.claude/CLAUDE.md"
+ln -sf "$REPO_DIR/claude-settings.json" "$HOME/.claude/settings.json"
 
 
 # ── tools ────────────────────────────────────────────────────────────────────
 TOOLS_DIR="$REPO_DIR/tools"
+
+BIN_DIR="$HOME/.local/bin"
 
 if [[ -d "$TOOLS_DIR" ]]; then
   header "Linking tools"

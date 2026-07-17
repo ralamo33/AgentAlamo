@@ -39,7 +39,7 @@ canvas restore <name>         # Restore most-recent archive to active (non-block
 `<name>` must be unique, alphanumeric + dashes/underscores, max 64 chars.
 `<path>` is the HTML file you wrote — canvas copies it into its own storage.
 
-If `canvas` is not on PATH, find it with `find ~/Workspace -path '*/tools/canvas/bin/canvas' -type f` and run it with `node <result>`.
+Prefer running `canvas` directly — it is on PATH and matches the allowed `Bash(canvas *)` rule, so it won't prompt. Only if `canvas` is not found, first locate it with `find ~/Workspace -path '*/tools/canvas/bin/canvas' -type f`, then run `node <that-path>` as a **separate** command. Never combine them as `node $(find ...)` — command substitution forces a permission prompt.
 
 ## Output format
 

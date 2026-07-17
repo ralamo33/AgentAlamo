@@ -121,6 +121,8 @@ Do not fix these — just report them. The developer should decide what to refac
 
 ### Report Format
 
+**Numbering:** Assign every finding that requires a human decision a unique, sequential number, counting continuously across the entire report (do not restart per section). Prefix each finding heading with `[N]`. This lets the developer reply by number, e.g. "1. fix it, 3. skip". Auto-fixed items that need no decision (tests you already fixed, mypy errors you already resolved) do not get a number — only surface the count. Any bug you could NOT fix, any complexity concern, and any remaining/pre-existing issue you are flagging DOES get a number. At the end of the report, note the total count, e.g. "Findings requiring your input: 1–7".
+
 Output the final report using this exact structure:
 
 ```
@@ -131,7 +133,7 @@ Output the final report using this exact structure:
 
 ## Bugs Found & Fixed
 <For each bug:>
-### <short description>
+### [N] <short description>
 - **File:** `path/to/file.py:line_number`
 - **Issue:** <what was wrong>
 - **Test:** `path/to/test_file.py::test_name`
@@ -157,13 +159,16 @@ Output the final report using this exact structure:
 ## Complexity & Readability Concerns
 
 <For each concern:>
-### <short description>
+### [N] <short description>
 - **File:** `path/to/file.py:line_number`
 - **Lines:** <start>-<end>
 - **Issue:** <what makes this code complex or confusing>
 - **Suggestion:** <brief recommendation>
 
 <If no concerns, say "No significant complexity issues found.">
+
+---
+**Findings requiring your input:** <first>–<last> (or "none"). Reply by number to tell me how to handle each, e.g. "1. fix it, 3. skip".
 ```
 
 Stick to this structure so the output is scannable. Use exact file paths and line numbers everywhere — the developer should be able to jump directly to each location.

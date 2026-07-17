@@ -138,6 +138,8 @@ Do not fix these — just report them so the developer can decide what to refact
 
 ### Report format
 
+**Numbering:** Assign every finding a unique, sequential number, counting continuously across the entire report — through Logic & Bugs, React Best Practices, CSS & Styling, and Complexity, in that order — without restarting per section. Prefix each finding heading with `[N]`. This lets the developer reply by number, e.g. "1. fix it, 3. skip". Auto-fixed lint/format issues that need no decision do not get a number — only report the count; any lint/format issue that remains after auto-fix DOES get a number. At the end of the report, note the total range, e.g. "Findings requiring your input: 1–9".
+
 Output the final report using this structure:
 
 ```
@@ -148,7 +150,7 @@ Output the final report using this structure:
 
 ## Logic & Bugs
 <For each issue:>
-### <short description>
+### [N] <short description>
 - **File:** `path/to/file.tsx:line_number`
 - **Issue:** <what's wrong>
 - **Suggested fix:** <how to fix it>
@@ -157,7 +159,7 @@ Output the final report using this structure:
 
 ## React Best Practices
 <For each issue:>
-### <short description>
+### [N] <short description>
 - **File:** `path/to/file.tsx:line_number`
 - **Rule:** <which convention is violated>
 - **Suggestion:** <what to do instead>
@@ -166,7 +168,7 @@ Output the final report using this structure:
 
 ## CSS & Styling
 <For each issue:>
-### <short description>
+### [N] <short description>
 - **File:** `path/to/file.tsx:line_number`
 - **Issue:** <what's wrong — raw color vs semantic token, deprecated component, missing shared component, etc.>
 - **Replacement:** <specific token, component, or import to use instead>
@@ -181,13 +183,16 @@ Output the final report using this structure:
 
 ## Complexity & Readability Concerns
 <For each concern:>
-### <short description>
+### [N] <short description>
 - **File:** `path/to/file.tsx:line_number`
 - **Lines:** <start>-<end>
 - **Issue:** <what makes this code complex or confusing>
 - **Suggestion:** <brief recommendation>
 
 <If none: "No significant complexity issues found.">
+
+---
+**Findings requiring your input:** <first>–<last> (or "none"). Reply by number to tell me how to handle each, e.g. "1. fix it, 3. skip".
 ```
 
 Use exact file paths and line numbers throughout. The developer should be able to jump directly to each location.
