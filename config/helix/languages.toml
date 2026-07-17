@@ -13,6 +13,10 @@ args = ["server"]
 command = "ty"
 args = ["server"]
 
+[language-server.typescript-language-server]
+command = "typescript-language-server"
+args = ["--stdio"]
+
 [language.debugger]
 name =  "debugpy"
 transport = "stdio"
@@ -26,3 +30,23 @@ completion = [
   { name = "entrypoint", completion = "filename", default = "." }
 ]
 args = { mode = "debug", program = "{0}" }
+
+[[language]]
+name = "typescript"
+language-servers = ["typescript-language-server"]
+auto-format = true
+
+[[language]]
+name = "tsx"
+language-servers = ["typescript-language-server"]
+auto-format = true
+
+[[language]]
+name = "javascript"
+language-servers = ["typescript-language-server"]
+auto-format = true
+
+[[language]]
+name = "jsx"
+language-servers = ["typescript-language-server"]
+auto-format = true

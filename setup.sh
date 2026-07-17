@@ -4,6 +4,8 @@ set -euo pipefail
 REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 GLOBAL_SOURCE_DIR="$REPO_DIR/skills-global"
 LOCAL_SOURCE_DIR="$REPO_DIR/skills-local"
+CONFIG_SOURCE_DIR="$REPO_DIR/config"
+CONFIG_TARGET_DIR="$HOME/.config"
 GLOBAL_SKILLS_DIR="$HOME/.claude/skills"
 LOCAL_SKILLS_DIR="$(pwd)/.claude/skills"
 
@@ -119,7 +121,15 @@ fi
 
 # -- config (only for option 3)--------------------------
 if [[ "$install_choice" == "3" ]]; then
-# TODO symlink all config files to ~/.config/...  
+  header "Linking config"
+  if [[ -d "$CONFIG_SOURCE_DIR" ]]; then
+    mkdir -p "$CONFIG_TARGET_DIR"
+    while IFS= read -r -d '' cfg_dir; do
+      link_skill "$cfg_dir" "$CONFIG_TARGET_DIR"
+    done < <(find "$CONFIG_SOURCE_DIR" -mindepth 1 -maxdepth 1 -type d -print0 | sort -z)
+  else
+    warn "No config directory found at $CONFIG_SOURCE_DIR"
+  fi
 fi
 
 # ── tools ────────────────────────────────────────────────────────────────────
