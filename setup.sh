@@ -7,7 +7,7 @@ LOCAL_SOURCE_DIR="$REPO_DIR/skills-local"
 CONFIG_SOURCE_DIR="$REPO_DIR/config"
 CONFIG_TARGET_DIR="$HOME/.config"
 GLOBAL_SKILLS_DIR="$HOME/.claude/skills"
-LOCAL_SKILLS_DIR="$(pwd)/.claude/skills"
+LOCAL_SKILLS_DIR="$HOME/.claude/skills"
 
 # ── colours ───────────────────────────────────────────────────────────────────
 BOLD='\033[1m'
@@ -84,7 +84,7 @@ header "What would you like to install?"
 echo ""
 info "  1) Canvas skills only (${CANVAS_SKILL_NAMES[*]})"
 info "  2) Skills only"
-info "  3) Skills & zellij tab renaming"
+info "  3) Everything"
 echo ""
 printf "  Choose [1/2/3] (default: 2): "
 read -r install_choice
@@ -109,15 +109,25 @@ for skill_dir in "${GLOBAL_SKILLS[@]}"; do
   link_skill "$skill_dir" "$GLOBAL_SKILLS_DIR"
 done
 
-for skill_dir in "${LOCAL_SKILLS[@]}"; do
-  info "── $(basename "$skill_dir")  [local]"
-  link_skill "$skill_dir" "$LOCAL_SKILLS_DIR"
-done
+if [[ "$install_choice" == "2" || "$install_choice" == "3" ]]; then
+  for skill_dir in "${LOCAL_SKILLS[@]}"; do
+    info "── $(basename "$skill_dir")  [local]"
+    link_skill "$skill_dir" "$LOCAL_SKILLS_DIR"
+  done
+else
+  for skill_dir in "${LOCAL_SKILLS[@]}"; do
+    info "── $(basename "$skill_dir")  [local] — skipped"
+  done
+fi
 
 # ── hooks (only for option 3) ────────────────────────────────────────────────
 if [[ "$install_choice" == "3" ]]; then
   "$REPO_DIR/setup-zellij.sh"
 fi
+
+# -- other symlinks -----------------------------------------------------------
+ln -sf "$REPO_DIR/CLAUDE.md" "$HOME/.claude/CLAUDE.md"
+ln -sf "$REPO_DIR/claude-settings.json" "$HOME/.claude/settings.json"
 
 # -- config (only for option 3)--------------------------
 if [[ "$install_choice" == "3" ]]; then
@@ -134,6 +144,8 @@ fi
 
 # ── tools ────────────────────────────────────────────────────────────────────
 TOOLS_DIR="$REPO_DIR/tools"
+
+BIN_DIR="$HOME/.local/bin"
 
 if [[ -d "$TOOLS_DIR" ]]; then
   header "Linking tools"
