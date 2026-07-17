@@ -1,0 +1,9 @@
+helix
+zellij
+
+# Python
+uv
+ty
+ruff
+pip
+debugpy

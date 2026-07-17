@@ -31,5 +31,47 @@
   },
   "alwaysThinkingEnabled": true,
   "effortLevel": "medium",
-  "tui": "fullscreen"
+  "tui": "fullscreen",
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/home/masterchief/Workspace/AgentAlamo/hooks/zellij-status.sh white"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/home/masterchief/Workspace/AgentAlamo/hooks/zellij-status.sh blue"
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/home/masterchief/Workspace/AgentAlamo/hooks/zellij-status.sh red"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/home/masterchief/Workspace/AgentAlamo/hooks/zellij-status.sh green"
+          }
+        ]
+      }
+    ]
+  }
 }

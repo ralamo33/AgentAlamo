@@ -1,0 +1,52 @@
+ [[language]]
+name = "python"
+language-servers = ["ruff", "ty"]
+auto-format = true
+formatter = { command = "ruff", args = ["format", "-"]}
+
+[language-server.ruff]
+command = "ruff"
+args = ["server"]
+
+
+[language-server.ty]
+command = "ty"
+args = ["server"]
+
+[language-server.typescript-language-server]
+command = "typescript-language-server"
+args = ["--stdio"]
+
+[language.debugger]
+name =  "debugpy"
+transport = "stdio"
+command = "python3"
+args = ["-m", "debugpy.adapter"]
+
+[[language.debugger.templates]]
+name = "source"
+request = "launch"
+completion = [
+  { name = "entrypoint", completion = "filename", default = "." }
+]
+args = { mode = "debug", program = "{0}" }
+
+[[language]]
+name = "typescript"
+language-servers = ["typescript-language-server"]
+auto-format = true
+
+[[language]]
+name = "tsx"
+language-servers = ["typescript-language-server"]
+auto-format = true
+
+[[language]]
+name = "javascript"
+language-servers = ["typescript-language-server"]
+auto-format = true
+
+[[language]]
+name = "jsx"
+language-servers = ["typescript-language-server"]
+auto-format = true
