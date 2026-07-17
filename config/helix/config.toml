@@ -1,0 +1,23 @@
+[keys.normal]
+"%" = "match_brackets"     # Vim %  : jump to matching bracket/char
+"0" = "goto_line_start"    # Vim 0  : first character of line
+"$" = "goto_line_end"      # Vim $  : last character of line
+"}" = "goto_next_paragraph"  # Vim }  : next paragraph
+"{" = "goto_prev_paragraph"  # Vim {  : previous paragraph
+"C-p" = "jump_backward"      # jumplist back  (was C-o)
+"C-n" = "jump_forward"       # jumplist forward (was C-i)
+"C-o" = "no_op"              # freed up for remapping elsewhere
+"C-i" = "no_op"              # freed up for remapping elsewhere
+
+[keys.insert]
+
+# Tree-sitter syntax navigation minor mode (V)
+[keys.normal.V]
+"+" = "expand_selection"        # was Alt-o / Alt-up
+"minus" = "shrink_selection"    # was Alt-i / Alt-down
+"c" = "select_all_children"     # was Alt-I / Alt-Shift-down
+"s" = "move_parent_node_start"  # was Alt-b
+"e" = "move_parent_node_end"    # was Alt-e
+"p" = "select_prev_sibling"     # was Alt-p / Alt-left
+"n" = "select_next_sibling"     # was Alt-n / Alt-right
+"a" = "select_all_siblings"     # was Alt-a
