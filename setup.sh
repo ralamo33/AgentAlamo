@@ -5,7 +5,7 @@ REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 GLOBAL_SOURCE_DIR="$REPO_DIR/skills-global"
 LOCAL_SOURCE_DIR="$REPO_DIR/skills-local"
 GLOBAL_SKILLS_DIR="$HOME/.claude/skills"
-LOCAL_SKILLS_DIR="$(pwd)/.claude/skills"
+LOCAL_SKILLS_DIR="$HOME/.claude/skills"
 
 # ── colours ───────────────────────────────────────────────────────────────────
 BOLD='\033[1m'
