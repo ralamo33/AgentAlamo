@@ -186,6 +186,23 @@ if [[ "$install_choice" == "3" ]]; then
     else
       ok "$(basename "$secrets") already exists — left untouched"
     fi
+
+    # Append a `source ~/.scripts/<name>` line for every sourceable script that
+    # isn't already sourced in the config file. Only regular files are sourced
+    # (directories like misc/ and test/ are skipped — you can't source a dir).
+    header "Adding script source lines to $name"
+    for src in "$REPO_DIR/scripts-global" "$REPO_DIR/scripts-local"; do
+      [[ -d "$src" ]] || continue
+      while IFS= read -r -d '' f; do
+        sname="$(basename "$f")"
+        if grep -qE "\.scripts/${sname}([[:space:]]|\"|'|$)" "$cfg"; then
+          info "source ~/.scripts/$sname — already present"
+        else
+          printf 'source ~/.scripts/%s\n' "$sname" >> "$cfg"
+          ok "appended source ~/.scripts/$sname"
+        fi
+      done < <(find "$src" -mindepth 1 -maxdepth 1 -type f -print0 | sort -z)
+    done
   fi
 fi
 

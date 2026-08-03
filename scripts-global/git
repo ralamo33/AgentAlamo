@@ -79,13 +79,39 @@ gitDiff() {
 }
 alias gitSquash='git rebase -i $(git merge-base HEAD origin/main)'
 alias gitClean='git branch --merged main | grep -vE "(^\*|main|master)" | xargs git branch -d'
-gitShow() {
-  git branch --show-current
+privateGitPrOrProjectUrl() {
   local pr_url
   pr_url=$(gh pr view --json url --jq .url 2>/dev/null)
   if [ -n "$pr_url" ]; then
     echo "$pr_url"
+    return
   fi
+
+  local repo_url
+  repo_url=$(gh repo view --json url --jq .url 2>/dev/null)
+  if [ -z "$repo_url" ]; then
+    return
+  fi
+
+  local branch ahead
+  branch=$(git branch --show-current)
+  ahead=$(git rev-list --count origin/main..HEAD 2>/dev/null)
+  ahead=${ahead:-0}
+  if [ -n "$branch" ] && [ "$ahead" -gt 0 ]; then
+    echo "$repo_url/pull/new/$branch"
+  else
+    echo "$repo_url"
+  fi
+}
+
+gitN() {
+  git push --set-upstream origin "$(git branch --show-current)"
+  privateGitPrOrProjectUrl
+}
+
+gitShow() {
+  git branch --show-current
+  privateGitPrOrProjectUrl
 }
 
 
