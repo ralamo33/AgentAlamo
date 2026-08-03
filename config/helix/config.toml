@@ -1,4 +1,7 @@
+theme="nightwolf"
+
 [keys.normal]
+"#" = "toggle_comments"    # comment/uncomment line or selection (default changed to C-c)
 "%" = "match_brackets"     # Vim %  : jump to matching bracket/char
 "0" = "goto_line_start"    # Vim 0  : first character of line
 "$" = "goto_line_end"      # Vim $  : last character of line
@@ -8,6 +11,7 @@
 "C-n" = "jump_forward"       # jumplist forward (was C-i)
 "C-o" = "no_op"              # freed up for remapping elsewhere
 "C-i" = "no_op"              # freed up for remapping elsewhere
+"C-f" = ":sh echo %{buffer_name} | pbcopy"
 
 [keys.insert]
 

@@ -10,7 +10,7 @@ Red. Green. Done.
 ## Flow
 
 1. **Propose 1-3 integration tests** that verify the happy path end-to-end. Describe each in one sentence. User confirms or adjusts.
-2. **Write the tests first.** Run them. They must fail. If a test passes before implementation, it's testing nothing — escalate to the user.
+2. **Write the tests first.** Before writing, check for a repo-local test-writing / test-conventions skill (e.g. `.claude/skills/test-writing/`) and follow it — it defines the repo's fixtures, isolation, parametrization, and helper-extraction style. Run them. They must fail. If a test passes before implementation, it's testing nothing — escalate to the user.
 3. **Implement until green.** Minimal changes to pass each test. Run tests after each change.
 4. **If a test won't pass after reasonable effort, stop and escalate.** Explain what you tried and what's blocking.
 

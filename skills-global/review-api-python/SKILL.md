@@ -1,11 +1,11 @@
 ---
-name: review-api
-description: Automated code review pipeline that diffs local changes against main, finds bugs and logical errors via TDD (writes failing tests then fixes code), runs and fixes all affected tests, runs and fixes mypy errors, and produces a complexity report with exact file/line locations. Use this skill whenever the user says "review my code", "review api", "check my changes", "find bugs", "review branch", "run review", "code review", "check for bugs in my changes", or wants a thorough automated review of their working branch before merging. Also trigger when the user asks to "review and fix" their code, wants TDD-based bug detection, or asks for a complexity/readability audit of changed files.
+name: review-api-python
+description: Automated code review pipeline for Python repositories that diffs local changes against main, finds bugs and logical errors via TDD (writes failing tests then fixes code), runs and fixes all affected tests, runs and fixes mypy errors, and produces a complexity report with exact file/line locations. Use this skill whenever the user says "review my code", "review api", "review python", "check my changes", "find bugs", "review branch", "run review", "code review", "check for bugs in my changes", or wants a thorough automated review of their working branch before merging. Also trigger when the user asks to "review and fix" their code, wants TDD-based bug detection, or asks for a complexity/readability audit of changed files. Assumes a Python stack (uv, pytest, mypy).
 ---
 
-# Review API
+# Review API (Python)
 
-A six-phase automated code review pipeline that operates exclusively on files changed relative to `main`. Each phase builds on the previous one, so run them in order.
+A six-phase automated code review pipeline for Python repositories that operates exclusively on files changed relative to `main`. Each phase builds on the previous one, so run them in order.
 
 ## Phase 1: Gather the Diff
 
