@@ -1,0 +1,91 @@
+#!/bin/bash
+# This file should be sourced in your .zshrc or .bashrc
+# It defines the gitUpdate function.
+
+gitUpdate() {
+  if [ -z "$1" ]; then
+    echo "❌ Error: No commit message provided."
+    echo "Usage: gitUpdate \"Your commit message\""
+    return 1
+  fi
+
+  if [ -f ".venv/bin/activate" ]; then
+    source .venv/bin/activate 2>/dev/null || true
+  fi
+
+  if gt branch info &>/dev/null; then
+    echo "🚀 Graphite-tracked branch detected, using gt push..."
+    gt modify --all && gt submit --stack --update-only
+  else
+    echo "🚀 Starting Git update..."
+    git add .
+    git commit -m "$1"
+    git push
+  fi
+
+  echo "✅ Git update complete!"
+}
+
+gitUpdateNoVerify() {
+  # Check if a commit message argument is provided.
+  if [ -z "$1" ]; then
+    # If no message, print an error and return from the function.
+    echo "❌ Error: No commit message provided."
+    echo "Usage: gitUpdate \"Your commit message\""
+    return 1
+  fi
+
+  # If a message is provided, proceed with the Git commands.
+  echo "🚀 Starting Git update with no verify..."
+
+  echo "👉 Staging files (git add .)"
+  git add .
+
+  echo "👉 Committing changes (git commit -m \"$1\")"
+  git commit -m "$1" --no-verify
+
+  echo "👉 Pushing to remote (git push)"
+  git push
+
+  echo "✅ Git update complete!"
+}
+
+gitB() {
+  emulate ksh
+  local num_lines=${1:-10}
+
+  local shades=(220 214 208 202 196 197 198 199 205 207)
+  local num_shades=${#shades[@]}
+  local reset="\e[0m"
+  local i=0
+  
+  git for-each-ref --sort=-committerdate refs/heads/ --format='%(refname:short)' \
+    | grep "ryan" \
+    | head -n "$num_lines" \
+    | while read -r branch; do
+        local color_index=$(( i % num_shades ))
+        local color_code=${shades[$color_index]}
+        local ansi_color="\e[38;5;${color_code}m"
+        
+        echo -e "${ansi_color}${branch}${reset}"
+        
+        i=$((i + 1))
+      done
+}
+
+gitDiff() {
+  git diff HEAD --name-only
+  git ls-files --others --exclude-standard
+}
+alias gitSquash='git rebase -i $(git merge-base HEAD origin/main)'
+alias gitClean='git branch --merged main | grep -vE "(^\*|main|master)" | xargs git branch -d'
+gitShow() {
+  git branch --show-current
+  local pr_url
+  pr_url=$(gh pr view --json url --jq .url 2>/dev/null)
+  if [ -n "$pr_url" ]; then
+    echo "$pr_url"
+  fi
+}
+
+

@@ -98,3 +98,6 @@ pre { background: #060a14; color: #c5d3e8; padding: 14px; border-radius: 6px;
       border: 1px solid #162d50;
       font-size: 12px; white-space: pre-wrap; word-break: break-all; overflow-x: auto; }
 ```
+
+## Plan Guidelines
+Plans should always maintain the 1-4 key tests that prove that everything is working as expected.

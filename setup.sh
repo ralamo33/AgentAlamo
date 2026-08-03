@@ -142,6 +142,53 @@ if [[ "$install_choice" == "3" ]]; then
   fi
 fi
 
+# ── scripts (only for option 3) ──────────────────────────────────────────────
+if [[ "$install_choice" == "3" ]]; then
+  header "Linking scripts"
+  SCRIPTS_TARGET="$HOME/.scripts"
+  mkdir -p "$SCRIPTS_TARGET"
+  for src in "$REPO_DIR/scripts-global" "$REPO_DIR/scripts-local"; do
+    [[ -d "$src" ]] || continue
+    while IFS= read -r -d '' f; do
+      link_skill "$f" "$SCRIPTS_TARGET"
+    done < <(find "$src" -mindepth 1 -maxdepth 1 -print0 | sort -z)
+  done
+fi
+
+# ── shell config (only for option 3) ─────────────────────────────────────────
+if [[ "$install_choice" == "3" ]]; then
+  header "Linking shell config"
+  SHELL_CONFIG_DIR="$REPO_DIR/shell-config"
+  mapfile -t CONFIG_FILES < <(find "$SHELL_CONFIG_DIR" -mindepth 1 -maxdepth 1 -type f 2>/dev/null | sort)
+  if [[ ${#CONFIG_FILES[@]} -eq 0 ]]; then
+    warn "No config file in $SHELL_CONFIG_DIR — skipping"
+  elif [[ ${#CONFIG_FILES[@]} -gt 1 ]]; then
+    err "Expected exactly one config file in $SHELL_CONFIG_DIR, found ${#CONFIG_FILES[@]}:"
+    for c in "${CONFIG_FILES[@]}"; do info "• $(basename "$c")"; done
+    exit 1
+  else
+    cfg="${CONFIG_FILES[0]}"
+    name="$(basename "$cfg")"          # e.g. zshrc
+    target="$HOME/.$name"             # ~/.zshrc
+    secrets="$HOME/.$name-secrets"    # ~/.zshrc-secrets
+    if [[ -e "$target" && ! -L "$target" ]]; then
+      ts="$(date +%Y%m%dT%H%M%S)"
+      mkdir -p "$REPO_DIR/backup"
+      cp -a "$target" "$REPO_DIR/backup/$name.$ts"
+      warn "backed up existing $target → backup/$name.$ts"
+    fi
+    ln -sfn "$cfg" "$target"
+    ok "$name  →  $target"
+    if [[ ! -e "$secrets" ]]; then
+      printf '# %s — machine-local credentials & identity. NEVER commit.\n' "$(basename "$secrets")" > "$secrets"
+      chmod 600 "$secrets"
+      ok "created $secrets (add your credentials here)"
+    else
+      ok "$(basename "$secrets") already exists — left untouched"
+    fi
+  fi
+fi
+
 # ── tools ────────────────────────────────────────────────────────────────────
 TOOLS_DIR="$REPO_DIR/tools"
 
