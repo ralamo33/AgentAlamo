@@ -106,8 +106,10 @@ def extract(path):
                         if cmd:
                             bash_cmds.append(cmd)
                     elif name not in ("Read", "Glob", "Grep", "Edit", "Write",
-                                      "TodoWrite", "Task", "Skill", "WebFetch",
-                                      "WebSearch", "NotebookEdit"):
+                                      "TodoWrite", "Task", "Agent", "TaskCreate",
+                                      "TaskUpdate", "TaskGet", "TaskList",
+                                      "Skill", "WebFetch", "WebSearch",
+                                      "NotebookEdit"):
                         other_tools.add(name)
         elif t == "user":
             if rec.get("isMeta"):
@@ -139,7 +141,7 @@ def main():
     ap.add_argument("--transcript")
     ap.add_argument("--cwd", default=os.getcwd())
     ap.add_argument("--settings",
-                    default=str(Path.home() / "Workspace" / "AgentAlamo" / "claude-settings.json"))
+                    default=str(Path.home() / "Workspace" / "AgentAlamo" / "claude-settings-global.json"))
     args = ap.parse_args()
 
     tpath = resolve_transcript(args.cwd, args.transcript)

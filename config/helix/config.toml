@@ -15,6 +15,14 @@ theme="nightwolf"
 
 [keys.insert]
 
+[keys.select]
+"#" = "toggle_comments"
+"%" = "match_brackets"
+"0" = "goto_line_start"
+"$" = "goto_line_end"
+"}" = "goto_next_paragraph"
+"{" = "goto_prev_paragraph"
+
 # Tree-sitter syntax navigation minor mode (V)
 [keys.normal.V]
 "+" = "expand_selection"        # was Alt-o / Alt-up
