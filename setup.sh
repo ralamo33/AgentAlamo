@@ -125,8 +125,10 @@ if [[ "$install_choice" == "3" ]]; then
   "$REPO_DIR/setup-zellij.sh"
 fi
 
-# -- other symlinks -----------------------------------------------------------
-ln -sf "$REPO_DIR/CLAUDE.md" "$HOME/.claude/CLAUDE.md"
+# -- global instructions symlink ----------------------------------------------
+# CLAUDE-global.md is the user-scope file loaded in every project. Repo-scoped
+# rules live in .claude/CLAUDE.md and are picked up without a symlink.
+ln -sf "$REPO_DIR/CLAUDE-global.md" "$HOME/.claude/CLAUDE.md"
 
 # -- global settings symlink (prompts before clobbering) ----------------------
 header "Linking global settings"
