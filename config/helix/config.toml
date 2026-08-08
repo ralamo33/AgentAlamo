@@ -3,6 +3,7 @@ theme="nightwolf"
 [keys.normal]
 "#" = "toggle_comments"    # comment/uncomment line or selection (default changed to C-c)
 "%" = "match_brackets"     # Vim %  : jump to matching bracket/char
+"Y" = "select_all"         # select entire file (default binding for % before it was remapped)
 "0" = "goto_line_start"    # Vim 0  : first character of line
 "$" = "goto_line_end"      # Vim $  : last character of line
 "}" = "goto_next_paragraph"  # Vim }  : next paragraph
@@ -14,6 +15,15 @@ theme="nightwolf"
 "C-f" = ":sh echo %{buffer_name} | pbcopy"
 
 [keys.insert]
+
+[keys.select]
+"#" = "toggle_comments"
+"%" = "match_brackets"
+"Y" = "select_all"
+"0" = "goto_line_start"
+"$" = "goto_line_end"
+"}" = "goto_next_paragraph"
+"{" = "goto_prev_paragraph"
 
 # Tree-sitter syntax navigation minor mode (V)
 [keys.normal.V]

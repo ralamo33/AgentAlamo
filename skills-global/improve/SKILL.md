@@ -20,7 +20,7 @@ Run the scanner. It finds the current session's transcript, diffs the commands t
 python3 ~/Workspace/AgentAlamo/skills-global/improve/scripts/scan_session.py
 ```
 
-Default target is the newest transcript for the current working directory, compared against `~/Workspace/AgentAlamo/claude-settings.json` (the file `setup.sh` symlinks to `~/.claude/settings.json` — the real source of truth). Pass `--transcript <path>` to review a specific session. The scanner prints a summary and saves a full JSON report to `/tmp/`; read that report for the complete list.
+Default target is the newest transcript for the current working directory, compared against `~/Workspace/AgentAlamo/claude-settings-global.json` (the file `setup.sh` symlinks to `~/.claude/settings.json` — the real source of truth). Pass `--transcript <path>` to review a specific session. The scanner prints a summary and saves a full JSON report to `/tmp/`; read that report for the complete list.
 
 The scanner is a *candidate finder*, not a decision-maker. Its suggested rules and feedback flags are starting points — your judgment in the next steps is what makes this safe.
 
@@ -63,6 +63,6 @@ Feedback captured:
   → pr-description skill: stop including the test plan section
 ```
 
-Let the user accept, drop, or edit items. Then apply the approved ones: edit the `permissions.allow` array in `~/Workspace/AgentAlamo/claude-settings.json` (keep it alphabetical-ish and grouped like the existing entries; don't introduce duplicates), and make the approved CLAUDE.md / skill edits. Because these files are symlinked from the repo, changes are live immediately and version-controlled — mention that the user can review the diff with `git diff` and commit when ready. Don't commit for them unless asked.
+Let the user accept, drop, or edit items. Then apply the approved ones: edit the `permissions.allow` array in `~/Workspace/AgentAlamo/claude-settings-global.json` (keep it alphabetical-ish and grouped like the existing entries; don't introduce duplicates), and make the approved CLAUDE.md / skill edits. Because these files are symlinked from the repo, changes are live immediately and version-controlled — mention that the user can review the diff with `git diff` and commit when ready. Don't commit for them unless asked.
 
 If nothing is worth changing, say so plainly rather than inventing changes — a clean session is a valid outcome.

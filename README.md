@@ -12,3 +12,7 @@ Uses symlinks to link files here to your global config
 ## Structure
 - use skills-global for skills you want to share across work & personal
 - use skills-local for skills you do not want to automatically load on setup
+
+## Conventions
+- add comments rarely — only where the logic is genuinely non-obvious
+- when you do add one, keep it to a short single line

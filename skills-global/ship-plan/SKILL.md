@@ -28,7 +28,7 @@ The project name (e.g. `candid-api`, `candid-ui`) drives which skills you pick i
 
 Projects carry their own rules — how the data layer is accessed, typing expectations, where tests go. A plan implemented against the wrong conventions is a plan that gets rejected in review. So before writing code, find the convention skill for this project.
 
-Discover it by name: look for a skill whose name matches the project. Search these locations (use Glob/Read, not shell):
+Discover it by name: look for a skill whose name matches the project. Search these locations with Glob/Read — or a single `ls -la` per path if Glob is not available in this session, never a piped chain:
 - `~/.claude/skills/<project>/`
 - `~/Workspace/AgentAlamo/skills-local/<project>/`
 - `~/Workspace/AgentAlamo/skills-global/<project>/`

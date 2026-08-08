@@ -125,9 +125,46 @@ if [[ "$install_choice" == "3" ]]; then
   "$REPO_DIR/setup-zellij.sh"
 fi
 
-# -- other symlinks -----------------------------------------------------------
-ln -sf "$REPO_DIR/CLAUDE.md" "$HOME/.claude/CLAUDE.md"
-ln -sf "$REPO_DIR/claude-settings.json" "$HOME/.claude/settings.json"
+# -- global instructions symlink ----------------------------------------------
+# CLAUDE-global.md is the user-scope file loaded in every project. Repo-scoped
+# rules live in .claude/CLAUDE.md and are picked up without a symlink.
+ln -sf "$REPO_DIR/CLAUDE-global.md" "$HOME/.claude/CLAUDE.md"
+
+# -- global settings symlink (prompts before clobbering) ----------------------
+header "Linking global settings"
+SETTINGS_SRC="$REPO_DIR/claude-settings-global.json"
+SETTINGS_LINK="$HOME/.claude/settings.json"
+
+if [[ ! -f "$SETTINGS_SRC" ]]; then
+  printf '{}\n' > "$SETTINGS_SRC"
+  ok "created $SETTINGS_SRC"
+fi
+
+mkdir -p "$HOME/.claude"
+
+if [[ -L "$SETTINGS_LINK" && "$(readlink "$SETTINGS_LINK")" == "$SETTINGS_SRC" ]]; then
+  ok "settings already linked  →  $SETTINGS_LINK"
+elif [[ -e "$SETTINGS_LINK" || -L "$SETTINGS_LINK" ]]; then
+  warn "$SETTINGS_LINK already exists"
+  printf "  Replace it with a symlink to claude-settings-global.json? [y/N]: "
+  read -r reply
+  if [[ "$reply" =~ ^[Yy]$ ]]; then
+    if [[ -f "$SETTINGS_LINK" && ! -L "$SETTINGS_LINK" ]]; then
+      ts="$(date +%Y%m%dT%H%M%S)"
+      mkdir -p "$REPO_DIR/backup"
+      cp -a "$SETTINGS_LINK" "$REPO_DIR/backup/settings.json.$ts"
+      warn "backed up existing settings → backup/settings.json.$ts"
+    fi
+    rm -f "$SETTINGS_LINK"
+    ln -s "$SETTINGS_SRC" "$SETTINGS_LINK"
+    ok "settings  →  $SETTINGS_LINK"
+  else
+    warn "left $SETTINGS_LINK untouched"
+  fi
+else
+  ln -s "$SETTINGS_SRC" "$SETTINGS_LINK"
+  ok "settings  →  $SETTINGS_LINK"
+fi
 
 # -- config (only for option 3)--------------------------
 if [[ "$install_choice" == "3" ]]; then

@@ -1,0 +1,274 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "cleanupPeriodDays": 7,
+  "env": {
+    "ANTHROPIC_VERTEX_PROJECT_ID": "candid-claudecode",
+    "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "0",
+    "CLAUDE_CODE_USE_VERTEX": "1",
+    "CLOUD_ML_REGION": "us-east5",
+    "DISABLE_TELEMETRY": "1",
+    "DISABLE_ERROR_REPORTING": "1",
+    "CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY": "1",
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+  },
+  "permissions": {
+    "allow": [
+      "Read",
+      "Glob",
+      "Grep",
+      "NotebookEdit",
+      "Edit",
+      "Write",
+      "WebFetch",
+      "WebSearch",
+      "Skill",
+      "Agent",
+      "TaskCreate",
+      "TaskUpdate",
+      "TaskGet",
+      "TaskList",
+      "Bash(agent-status.sh *)",
+      "Bash(*/agent-status.sh *)",
+      "Bash(bash */tests/*-test.sh)",
+      "Bash(zellij action list-panes *)",
+      "Bash(zellij action query-tab-names)",
+      "Bash(command grep *)",
+      "Bash(grep *)",
+      "Bash(rg *)",
+      "Bash(ugrep *)",
+      "Bash(find *)",
+      "Bash(ls)",
+      "Bash(ls *)",
+      "Bash(tree *)",
+      "Bash(cat *)",
+      "Bash(head *)",
+      "Bash(tail *)",
+      "Bash(sed *)",
+      "Bash(awk *)",
+      "Bash(sort *)",
+      "Bash(uniq *)",
+      "Bash(wc *)",
+      "Bash(tr *)",
+      "Bash(cut *)",
+      "Bash(jq *)",
+      "Bash(diff *)",
+      "Bash(echo *)",
+      "Bash(pwd)",
+      "Bash(pwd *)",
+      "Bash(cd *)",
+      "Bash(which *)",
+      "Bash(type *)",
+      "Bash(file *)",
+      "Bash(stat *)",
+      "Bash(readlink *)",
+      "Bash(basename *)",
+      "Bash(dirname *)",
+      "Bash(date)",
+      "Bash(date *)",
+      "Bash(env)",
+      "Bash(pgrep *)",
+      "Bash(sleep *)",
+      "Bash(mkdir *)",
+      "Bash(source *)",
+      "Bash(node *)",
+      "Bash(bun *)",
+      "Bash(python *)",
+      "Bash(poetry *)",
+      "Bash(uv run *)",
+      "Bash(pnpm *)",
+      "Bash(npx *)",
+      "Bash(pre-commit *)",
+      "Bash(zsh -n *)",
+      "Bash(bash -n *)",
+      "Bash(git *)",
+      "Bash(gh *)",
+      "Bash(gt *)",
+      "Bash(fern generate *)",
+      "Bash(canvas *)",
+      "Bash(psqlLocal *)",
+      "Bash(dbRun *)",
+      "Bash(dbReady)",
+      "Bash(dbReady:*)",
+      "Bash(dbReset)",
+      "Bash(dbReset:*)",
+      "Bash(apiCodegen)",
+      "Bash(apiCodegen:*)",
+      "Bash(wtRun uv run *)",
+      "Bash(flowList)",
+      "Bash(flowUp *)",
+      "Bash(flowUpHot *)",
+      "Bash(flowUiPoint *)",
+      "Bash(flowDown *)"
+    ],
+    "deny": [
+      "Read(/Users/ryan/Workspace/**/.env)",
+      "Read(/Users/ryan/Workspace/**/.env.*)",
+      "Read(/Users/ryan/Workspace/**/secrets/**)",
+      "Bash(rm -rf *)",
+      "Bash(rm -fr *)",
+      "Bash(cdc ssh:*)",
+      "Bash(cdc rules-pod:*)",
+      "Bash(k-exec:*)",
+      "Bash(kubectl exec:*)",
+      "Bash(kubectl port-forward:*)",
+      "Bash(open-pod:*)",
+      "Bash(git stash *)",
+      "Bash(gt stash *)",
+      "Bash(ssh:*)",
+      "mcp__temporal-prod__start_workflow",
+      "mcp__temporal-prod__terminate_workflow",
+      "mcp__temporal-prod__cancel_workflow",
+      "mcp__temporal-prod__signal_workflow",
+      "mcp__temporal-prod__continue_as_new",
+      "mcp__temporal-prod__batch_terminate",
+      "mcp__temporal-prod__batch_cancel",
+      "mcp__temporal-prod__batch_signal",
+      "mcp__temporal-prod__start_activity",
+      "mcp__temporal-prod__execute_activity",
+      "mcp__temporal-prod__cancel_activity",
+      "mcp__temporal-prod__terminate_activity",
+      "mcp__temporal-prod__batch_cancel_activities",
+      "mcp__temporal-prod__batch_terminate_activities",
+      "mcp__temporal-prod__create_schedule",
+      "mcp__temporal-prod__delete_schedule",
+      "mcp__temporal-prod__trigger_schedule",
+      "mcp__temporal-prod__pause_schedule",
+      "mcp__temporal-prod__unpause_schedule"
+    ],
+    "additionalDirectories": [
+      "/Users/ryan/Workspace",
+      "/Users/ryan/.scripts",
+      "/Users/ryan/.claude"
+    ]
+  },
+  "model": "claude-opus-5",
+  "availableModels": [
+    "fable",
+    "claude-opus-5",
+    "claude-opus-5[1m]",
+    "claude-sonnet-5",
+    "haiku"
+  ],
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "agent-status.sh emit SessionStart"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "agent-status.sh emit UserPromptSubmit"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "agent-status.sh emit PreToolUse"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "agent-status.sh emit PostToolUse"
+          }
+        ]
+      }
+    ],
+    "SubagentStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "agent-status.sh emit SubagentStart"
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "agent-status.sh emit SubagentStop"
+          }
+        ]
+      }
+    ],
+    "PermissionRequest": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "agent-status.sh emit PermissionRequest"
+          }
+        ]
+      }
+    ],
+    "Elicitation": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "agent-status.sh emit Elicitation"
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "agent-status.sh emit Notification"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "agent-status.sh emit Stop"
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "agent-status.sh emit SessionEnd"
+          }
+        ]
+      }
+    ]
+  },
+  "enabledPlugins": {
+    "figma@claude-plugins-official": false,
+    "linear@claude-plugins-official": false,
+    "Notion@claude-plugins-official": false
+  },
+  "alwaysThinkingEnabled": true,
+  "companyAnnouncements": [
+    "Life before death, strength before weakness, journey before destination."
+  ],
+  "": "https://json.schemastore.org/claude-code-settings.json"
+}
