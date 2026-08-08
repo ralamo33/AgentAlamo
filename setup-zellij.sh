@@ -79,15 +79,17 @@ fi
 
 HOOKS_JSON=$(cat <<'HOOKS_EOF'
 {
-  "PreToolUse": [{"hooks": [{"type": "command", "command": "set-agent-status.sh '🟡'"}]}],
-  "PostToolUse": [{"hooks": [{"type": "command", "command": "set-agent-status.sh '🟡'"}]}],
-  "SubagentStart": [{"hooks": [{"type": "command", "command": "set-agent-status.sh '🟡'"}]}],
-  "Notification": [{"hooks": [{"type": "command", "command": "set-agent-status.sh '🔴'"}]}],
-  "PermissionRequest": [{"hooks": [{"type": "command", "command": "set-agent-status.sh '🔴'"}]}],
-  "Elicitation": [{"hooks": [{"type": "command", "command": "set-agent-status.sh '🔴'"}]}],
-  "Stop": [{"hooks": [{"type": "command", "command": "set-agent-status.sh '🟢'"}]}],
-  "SessionEnd": [{"hooks": [{"type": "command", "command": "set-agent-status.sh 'clear'"}]}],
-  "StopFailure": [{"hooks": [{"type": "command", "command": "set-agent-status.sh '🔴'"}]}]
+  "SessionStart": [{"hooks": [{"type": "command", "command": "agent-status.sh emit SessionStart"}]}],
+  "UserPromptSubmit": [{"hooks": [{"type": "command", "command": "agent-status.sh emit UserPromptSubmit"}]}],
+  "PreToolUse": [{"hooks": [{"type": "command", "command": "agent-status.sh emit PreToolUse"}]}],
+  "PostToolUse": [{"hooks": [{"type": "command", "command": "agent-status.sh emit PostToolUse"}]}],
+  "SubagentStart": [{"hooks": [{"type": "command", "command": "agent-status.sh emit SubagentStart"}]}],
+  "SubagentStop": [{"hooks": [{"type": "command", "command": "agent-status.sh emit SubagentStop"}]}],
+  "PermissionRequest": [{"hooks": [{"type": "command", "command": "agent-status.sh emit PermissionRequest"}]}],
+  "Elicitation": [{"hooks": [{"type": "command", "command": "agent-status.sh emit Elicitation"}]}],
+  "Notification": [{"hooks": [{"type": "command", "command": "agent-status.sh emit Notification"}]}],
+  "Stop": [{"hooks": [{"type": "command", "command": "agent-status.sh emit Stop"}]}],
+  "SessionEnd": [{"hooks": [{"type": "command", "command": "agent-status.sh emit SessionEnd"}]}]
 }
 HOOKS_EOF
 )
@@ -128,5 +130,13 @@ ok "Hooks merged into $SETTINGS"
 header "Done"
 echo ""
 info "Zellij tabs will now show agent status:"
-info "  🟡  working   🔴  needs attention   🟢  done"
+info "  🟡  working   🔴  needs you   ⚪  your turn"
+info "An idle tab escalates ⚪ → 🔴 after ${AS_STALE_AFTER:-300}s unclaimed."
+echo ""
+info "Tabs you never named are auto-named after their claude pane's directory,"
+info "so they can carry a marker. Set AS_NAME_UNNAMED=0 to leave them alone."
+echo ""
+info "Preview without renaming:  agent-status.sh dryrun"
+info "Inspect with:              agent-status.sh dump"
+info "Reset with:                agent-status.sh clear"
 echo ""

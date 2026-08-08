@@ -12,11 +12,6 @@
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
   },
   "permissions": {
-    "additionalDirectories": [
-      "/Users/ryan/Workspace",
-      "/Users/ryan/.scripts",
-      "/Users/ryan/.claude"
-    ],
     "allow": [
       "Read",
       "Glob",
@@ -32,6 +27,11 @@
       "TaskUpdate",
       "TaskGet",
       "TaskList",
+      "Bash(agent-status.sh *)",
+      "Bash(*/agent-status.sh *)",
+      "Bash(bash */tests/*-test.sh)",
+      "Bash(zellij action list-panes *)",
+      "Bash(zellij action query-tab-names)",
       "Bash(command grep *)",
       "Bash(grep *)",
       "Bash(rg *)",
@@ -93,7 +93,12 @@
       "Bash(dbReset:*)",
       "Bash(apiCodegen)",
       "Bash(apiCodegen:*)",
-      "Bash(wtRun uv run *)"
+      "Bash(wtRun uv run *)",
+      "Bash(flowList)",
+      "Bash(flowUp *)",
+      "Bash(flowUpHot *)",
+      "Bash(flowUiPoint *)",
+      "Bash(flowDown *)"
     ],
     "deny": [
       "Read(/Users/ryan/Workspace/**/.env)",
@@ -129,15 +134,48 @@
       "mcp__temporal-prod__trigger_schedule",
       "mcp__temporal-prod__pause_schedule",
       "mcp__temporal-prod__unpause_schedule"
+    ],
+    "additionalDirectories": [
+      "/Users/ryan/Workspace",
+      "/Users/ryan/.scripts",
+      "/Users/ryan/.claude"
     ]
   },
+  "model": "claude-opus-5",
+  "availableModels": [
+    "fable",
+    "claude-opus-5",
+    "claude-opus-5[1m]",
+    "claude-sonnet-5",
+    "haiku"
+  ],
   "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "agent-status.sh emit SessionStart"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "agent-status.sh emit UserPromptSubmit"
+          }
+        ]
+      }
+    ],
     "PreToolUse": [
       {
         "hooks": [
           {
             "type": "command",
-            "command": "set-agent-status.sh '🟡'"
+            "command": "agent-status.sh emit PreToolUse"
           }
         ]
       }
@@ -147,7 +185,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "set-agent-status.sh '🟡'"
+            "command": "agent-status.sh emit PostToolUse"
           }
         ]
       }
@@ -157,17 +195,17 @@
         "hooks": [
           {
             "type": "command",
-            "command": "set-agent-status.sh '🟡'"
+            "command": "agent-status.sh emit SubagentStart"
           }
         ]
       }
     ],
-    "Notification": [
+    "SubagentStop": [
       {
         "hooks": [
           {
             "type": "command",
-            "command": "set-agent-status.sh '🔴'"
+            "command": "agent-status.sh emit SubagentStop"
           }
         ]
       }
@@ -177,7 +215,27 @@
         "hooks": [
           {
             "type": "command",
-            "command": "set-agent-status.sh '🔴'"
+            "command": "agent-status.sh emit PermissionRequest"
+          }
+        ]
+      }
+    ],
+    "Elicitation": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "agent-status.sh emit Elicitation"
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "agent-status.sh emit Notification"
           }
         ]
       }
@@ -187,7 +245,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "set-agent-status.sh '🟢'"
+            "command": "agent-status.sh emit Stop"
           }
         ]
       }
@@ -197,7 +255,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "set-agent-status.sh 'clear'"
+            "command": "agent-status.sh emit SessionEnd"
           }
         ]
       }

@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+# Helix formatter shim: routes each buffer to the formatter its own project depends on.
+set -uo pipefail
+
+buffer="${1:-}"
+
+work="$(mktemp -d)"
+trap 'rm -rf "$work"' EXIT
+cat >"$work/in"
+
+passthrough() {
+  cat "$work/in"
+  exit 0
+}
+
+[ -n "$buffer" ] || passthrough
+
+case "$buffer" in
+  /*) target="$buffer" ;;
+  *) target="$PWD/${buffer##*/}" ;;
+esac
+
+run() {
+  "$@" <"$work/in" >"$work/out" 2>/dev/null || return 1
+  [ -s "$work/out" ] || return 1
+  cat "$work/out"
+  exit 0
+}
+
+dir="${target%/*}"
+while [ -n "$dir" ] && [ "$dir" != "/" ]; do
+  if [ -f "$dir/package.json" ]; then
+    for tool in oxfmt biome prettier dprint; do
+      bin="$dir/node_modules/.bin/$tool"
+      [ -x "$bin" ] || continue
+      grep -q "\"$tool\"[[:space:]]*:" "$dir/package.json" || continue
+      case "$tool" in
+        biome) run "$bin" format --stdin-file-path "$target" ;;
+        dprint) run "$bin" fmt --stdin "$target" ;;
+        *) run "$bin" --stdin-filepath "$target" ;;
+      esac
+      passthrough
+    done
+  fi
+  dir="${dir%/*}"
+done
+
+command -v prettier >/dev/null 2>&1 && run prettier --stdin-filepath "$target"
+
+passthrough

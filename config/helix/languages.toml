@@ -13,10 +13,6 @@ args = ["server"]
 command = "ty"
 args = ["server"]
 
-[language-server.typescript-language-server]
-command = "typescript-language-server"
-args = ["--stdio"]
-
 [language.debugger]
 name =  "debugpy"
 transport = "stdio"
@@ -31,22 +27,59 @@ completion = [
 ]
 args = { mode = "debug", program = "{0}" }
 
+[language-server.typescript-language-server.config]
+maxTsServerMemory = 4096
+
+[language-server.typescript-language-server.config.preferences]
+importModuleSpecifierPreference = "project-relative"
+preferTypeOnlyAutoImports = true
+includeCompletionsForImportStatements = true
+jsxAttributeCompletionStyle = "braces"
+
+[language-server.typescript-language-server.config.completions]
+completeFunctionCalls = true
+
+# ESLint 9 defaults to flat config; Helix's built-in default pins this false and merges can't unset it.
+[language-server.vscode-eslint-language-server.config]
+useFlatConfig = true
+experimental = { useFlatConfig = true }
+
 [[language]]
 name = "typescript"
-language-servers = ["typescript-language-server"]
 auto-format = true
+formatter = { command = "js-fmt", args = ["%{buffer_name}"] }
+persistent-diagnostic-sources = ["eslint"]
+language-servers = [
+  { name = "typescript-language-server", except-features = ["format"] },
+  "vscode-eslint-language-server",
+]
 
 [[language]]
 name = "tsx"
-language-servers = ["typescript-language-server"]
 auto-format = true
+formatter = { command = "js-fmt", args = ["%{buffer_name}"] }
+persistent-diagnostic-sources = ["eslint"]
+language-servers = [
+  { name = "typescript-language-server", except-features = ["format"] },
+  "vscode-eslint-language-server",
+]
 
 [[language]]
 name = "javascript"
-language-servers = ["typescript-language-server"]
 auto-format = true
+formatter = { command = "js-fmt", args = ["%{buffer_name}"] }
+persistent-diagnostic-sources = ["eslint"]
+language-servers = [
+  { name = "typescript-language-server", except-features = ["format"] },
+  "vscode-eslint-language-server",
+]
 
 [[language]]
 name = "jsx"
-language-servers = ["typescript-language-server"]
 auto-format = true
+formatter = { command = "js-fmt", args = ["%{buffer_name}"] }
+persistent-diagnostic-sources = ["eslint"]
+language-servers = [
+  { name = "typescript-language-server", except-features = ["format"] },
+  "vscode-eslint-language-server",
+]
