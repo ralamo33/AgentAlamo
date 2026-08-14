@@ -8,12 +8,16 @@ theme="nightwolf"
 "$" = "goto_line_end"      # Vim $  : last character of line
 "}" = "goto_next_paragraph"  # Vim }  : next paragraph
 "{" = "goto_prev_paragraph"  # Vim {  : previous paragraph
-"H" = "jump_backward"        # jumplist back (was C-p, but zellij's normal mode intercepts Ctrl-p)
-"L" = "jump_forward"         # jumplist forward (was C-n, but zellij's normal mode intercepts Ctrl-n)
+"H" = "jump_forward"         # jumplist forward (was C-i)
+"L" = "jump_backward"        # jumplist back  (was C-o)
 "C-o" = "no_op"              # freed up for remapping elsewhere
 "C-i" = "no_op"              # freed up for remapping elsewhere
+"C-n" = "no_op"              # freed up for remapping elsewhere
+"C-p" = "no_op"              # freed up for remapping elsewhere
 "C-f" = ":sh $HOME/.config/helix/bin/hx-clip-copy %{buffer_name}"  # OSC 52 clipboard copy, no xclip/pbcopy needed; quote-free so Helix's :sh tokenizer doesn't choke
-"D" = "repeat_last_motion"   # was Alt-. ; ";" and "," are already taken (collapse_selection / keep_primary_selection)
+# TODO this shouuld use the same no xclip/pbcopy thing of C-f but replace every / with a .
+"M" = ":sh echo %{buffer_name} | tr / . | pbcopy"
+"D" = "repeat_last_motion"
 
 [keys.insert]
 
