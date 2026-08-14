@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# OSC 52 clipboard copy: writes straight to the controlling terminal so it works
+# through Zellij + Ghostty (or any OSC52-aware terminal) without xclip/pbcopy.
+printf '\033]52;c;%s\a' "$(printf '%s' "$1" | base64 | tr -d '\n')" > /dev/tty
