@@ -8,11 +8,14 @@ theme="nightwolf"
 "$" = "goto_line_end"      # Vim $  : last character of line
 "}" = "goto_next_paragraph"  # Vim }  : next paragraph
 "{" = "goto_prev_paragraph"  # Vim {  : previous paragraph
-"C-p" = "jump_backward"      # jumplist back  (was C-o)
-"C-n" = "jump_forward"       # jumplist forward (was C-i)
+"H" = "jump_forward"         # jumplist forward (was C-i)
+"L" = "jump_backward"        # jumplist back  (was C-o)
 "C-o" = "no_op"              # freed up for remapping elsewhere
 "C-i" = "no_op"              # freed up for remapping elsewhere
+"C-n" = "no_op"              # freed up for remapping elsewhere
+"C-p" = "no_op"              # freed up for remapping elsewhere
 "C-f" = ":sh echo %{buffer_name} | pbcopy"
+"M" = ":sh echo %{buffer_name} | tr / . | pbcopy"
 
 [keys.insert]
 
