@@ -100,4 +100,4 @@ pre { background: #060a14; color: #c5d3e8; padding: 14px; border-radius: 6px;
 ```
 
 ## Plan Guidelines
-Plans should always maintain the 1-4 key tests that prove that everything is working as expected.
+Plans should always maintain the 1-2 key tests that prove that everything is working as expected E2E.
