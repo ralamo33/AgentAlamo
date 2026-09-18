@@ -14,8 +14,9 @@ theme="nightwolf"
 "C-i" = "no_op"              # freed up for remapping elsewhere
 "C-n" = "no_op"              # freed up for remapping elsewhere
 "C-p" = "no_op"              # freed up for remapping elsewhere
-"C-f" = ":sh echo %{buffer_name} | pbcopy"
-"M" = ":sh echo %{buffer_name} | tr / . | pbcopy"
+"C-f" = ":sh $HOME/.config/helix/bin/hx-clip-copy %{buffer_name}"  # OSC 52 clipboard copy, no xclip/pbcopy needed; quote-free so Helix's :sh tokenizer doesn't choke
+"M" = ":sh $HOME/.config/helix/bin/hx-clip-copy --dotted %{buffer_name}"
+"D" = "repeat_last_motion"
 
 [keys.insert]
 
@@ -38,3 +39,4 @@ theme="nightwolf"
 "p" = "select_prev_sibling"     # was Alt-p / Alt-left
 "n" = "select_next_sibling"     # was Alt-n / Alt-right
 "a" = "select_all_siblings"     # was Alt-a
+"f" = "flip_selections"         # was Alt-;

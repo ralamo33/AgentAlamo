@@ -1,6 +1,6 @@
 ---
 name: options
-description: Answer a decision with a scannable list of high-level options — one line each, `* label - why you'd pick it`, and nothing else. Invoked explicitly by the user as /options. Do not trigger this on your own, and do not offer it unprompted.
+description: Answer a decision with a scannable list of high-level options — one line each, `1. label - why you'd pick it`, and nothing else. Invoked explicitly by the user as /options. Do not trigger this on your own, and do not offer it unprompted.
 ---
 
 # Options
@@ -14,8 +14,8 @@ With no argument, the decision is whatever is live in the conversation.
 ## Format
 
 ```
-* label - why you'd pick this one
-* label - why you'd pick this one
+1. label - why you'd pick this one
+2. label - why you'd pick this one
 ```
 
 Label: a noun phrase, one to three words. Reason: a fragment, under about eight words.
@@ -24,12 +24,14 @@ Count: however many genuinely distinct options exist, usually three to five. Don
 
 Nothing above the list, nothing below it. No preamble, no framing line, no recommendation, no "let me know which one."
 
+If the user's next reply is bare digits (`2`, `3`), that's them picking that numbered option — act on it directly, don't ask them to confirm or restate it.
+
 ## What makes the reasons work
 
 ```
-* hotdogs - simple
-* italian - romantic
-* thai - for the curry sauce
+1. hotdogs - simple
+2. italian - romantic
+3. thai - for the curry sauce
 ```
 
 Each reason is a different *motivation*, not a description of the option. Effort, occasion, craving — three separate axes. The user scans, recognizes their own situation in one of them, and points.
@@ -53,25 +55,25 @@ If the problem is underspecified, don't ask a clarifying question first. Let the
 Slow CI:
 
 ```
-* cache deps - one line, buys 40%
-* split the suite - parallel, needs runner budget
-* drop the e2e tier - fastest, loses coverage
-* leave it - it's six minutes
+1. cache deps - one line, buys 40%
+2. split the suite - parallel, needs runner budget
+3. drop the e2e tier - fastest, loses coverage
+4. leave it - it's six minutes
 ```
 
 Auth for a new API:
 
 ```
-* session cookies - simplest, same-origin only
-* jwt - stateless, revocation is a pain
-* reuse the existing gateway - no new surface
+1. session cookies - simplest, same-origin only
+2. jwt - stateless, revocation is a pain
+3. reuse the existing gateway - no new surface
 ```
 
 First engineering hire:
 
 ```
-* senior generalist - unblocks you everywhere
-* junior plus your time - cheap, costs your focus
-* contractor - reversible
-* don't - runway
+1. senior generalist - unblocks you everywhere
+2. junior plus your time - cheap, costs your focus
+3. contractor - reversible
+4. don't - runway
 ```
