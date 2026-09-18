@@ -13,6 +13,9 @@ args = ["server"]
 command = "ty"
 args = ["server"]
 
+[language-server.ty.config]
+logLevel = "debug"
+
 [language.debugger]
 name =  "debugpy"
 transport = "stdio"
