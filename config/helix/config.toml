@@ -15,8 +15,7 @@ theme="nightwolf"
 "C-n" = "no_op"              # freed up for remapping elsewhere
 "C-p" = "no_op"              # freed up for remapping elsewhere
 "C-f" = ":sh $HOME/.config/helix/bin/hx-clip-copy %{buffer_name}"  # OSC 52 clipboard copy, no xclip/pbcopy needed; quote-free so Helix's :sh tokenizer doesn't choke
-# TODO this shouuld use the same no xclip/pbcopy thing of C-f but replace every / with a .
-"M" = ":sh echo %{buffer_name} | tr / . | pbcopy"
+"M" = ":sh $HOME/.config/helix/bin/hx-clip-copy --dotted %{buffer_name}"
 "D" = "repeat_last_motion"
 
 [keys.insert]
