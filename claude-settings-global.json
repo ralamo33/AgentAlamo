@@ -94,7 +94,6 @@
       "Read(/Users/ryan/Workspace/**/secrets/**)",
       "Bash(rm -rf *)",
       "Bash(rm -fr *)",
-      "Bash(cdc ssh:*)",
       "Bash(cdc rules-pod:*)",
       "Bash(k-exec:*)",
       "Bash(kubectl exec:*)",
@@ -102,7 +101,6 @@
       "Bash(open-pod:*)",
       "Bash(git stash *)",
       "Bash(gt stash *)",
-      "Bash(ssh:*)",
       "mcp__temporal-prod__start_workflow",
       "mcp__temporal-prod__terminate_workflow",
       "mcp__temporal-prod__cancel_workflow",
@@ -252,12 +250,13 @@
   "enabledPlugins": {
     "figma@claude-plugins-official": false,
     "linear@claude-plugins-official": false,
-    "Notion@claude-plugins-official": false
+    "Notion@claude-plugins-official": false,
+    "typescript-lsp@claude-plugins-official": true
   },
   "alwaysThinkingEnabled": true,
+  "effortLevel": "medium",
   "companyAnnouncements": [
     "Life before death, strength before weakness, journey before destination."
   ],
-  "": "https://json.schemastore.org/claude-code-settings.json",
-  "effortLevel": "medium"
+  "": "https://json.schemastore.org/claude-code-settings.json"
 }

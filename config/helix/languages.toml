@@ -86,3 +86,26 @@ language-servers = [
   { name = "typescript-language-server", except-features = ["format"] },
   "vscode-eslint-language-server",
 ]
+
+[[language]]
+name = "rust"
+auto-format = true
+language-servers = ["rust-analyzer"]
+
+[language-server.rust-analyzer.config]
+check = { command = "clippy" }
+
+[[language]]
+name = "julia"
+auto-format = true
+language-servers = ["julia"]
+
+[language-server.julia]
+command = "julia"
+args = [
+  "--startup-file=no",
+  "--history-file=no",
+  "--quiet",
+  "-e",
+  "using LanguageServer; runserver()",
+]
