@@ -33,8 +33,18 @@ discover_skills() {
     | sort
 }
 
-mapfile -t GLOBAL_SKILLS < <(discover_skills "$GLOBAL_SOURCE_DIR")
-mapfile -t LOCAL_SKILLS  < <(discover_skills "$LOCAL_SOURCE_DIR")
+# bash 3.2 (macOS default) has no mapfile; read a command's output lines into an array
+read_lines() {
+  local __var="$1"; shift
+  eval "$__var=()"
+  local line
+  while IFS= read -r line; do
+    [[ -n "$line" ]] && eval "$__var+=(\"\$line\")"
+  done < <("$@")
+}
+
+read_lines GLOBAL_SKILLS discover_skills "$GLOBAL_SOURCE_DIR"
+read_lines LOCAL_SKILLS  discover_skills "$LOCAL_SOURCE_DIR"
 
 if [[ ${#GLOBAL_SKILLS[@]} -eq 0 && ${#LOCAL_SKILLS[@]} -eq 0 ]]; then
   err "No skills found under $GLOBAL_SOURCE_DIR or $LOCAL_SOURCE_DIR"
@@ -42,10 +52,10 @@ if [[ ${#GLOBAL_SKILLS[@]} -eq 0 && ${#LOCAL_SKILLS[@]} -eq 0 ]]; then
 fi
 
 header "Skills found in repo"
-for s in "${GLOBAL_SKILLS[@]}"; do
+for s in ${GLOBAL_SKILLS[@]+"${GLOBAL_SKILLS[@]}"}; do
   info "• $(basename "$s")  ${YELLOW}[global]${RESET}"
 done
-for s in "${LOCAL_SKILLS[@]}"; do
+for s in ${LOCAL_SKILLS[@]+"${LOCAL_SKILLS[@]}"}; do
   info "• $(basename "$s")  ${YELLOW}[local]${RESET}"
 done
 
@@ -93,7 +103,7 @@ install_choice="${install_choice:-2}"
 # ── install skills ───────────────────────────────────────────────────────────
 header "Linking skills"
 
-for skill_dir in "${GLOBAL_SKILLS[@]}"; do
+for skill_dir in ${GLOBAL_SKILLS[@]+"${GLOBAL_SKILLS[@]}"}; do
   name="$(basename "$skill_dir")"
   if [[ "$install_choice" == "1" ]]; then
     is_canvas=false
@@ -110,12 +120,12 @@ for skill_dir in "${GLOBAL_SKILLS[@]}"; do
 done
 
 if [[ "$install_choice" == "2" || "$install_choice" == "3" ]]; then
-  for skill_dir in "${LOCAL_SKILLS[@]}"; do
+  for skill_dir in ${LOCAL_SKILLS[@]+"${LOCAL_SKILLS[@]}"}; do
     info "── $(basename "$skill_dir")  [local]"
     link_skill "$skill_dir" "$LOCAL_SKILLS_DIR"
   done
 else
-  for skill_dir in "${LOCAL_SKILLS[@]}"; do
+  for skill_dir in ${LOCAL_SKILLS[@]+"${LOCAL_SKILLS[@]}"}; do
     info "── $(basename "$skill_dir")  [local] — skipped"
   done
 fi
@@ -130,31 +140,74 @@ fi
 # rules live in .claude/CLAUDE.md and are picked up without a symlink.
 ln -sf "$REPO_DIR/CLAUDE-global.md" "$HOME/.claude/CLAUDE.md"
 
-# -- global settings symlink (prompts before clobbering) ----------------------
-header "Linking global settings"
+# -- global settings ------------------------------------------------------------
+header "Installing global settings"
 SETTINGS_SRC="$REPO_DIR/claude-settings-global.json"
 SETTINGS_LINK="$HOME/.claude/settings.json"
 
-if [[ ! -f "$SETTINGS_SRC" ]]; then
-  printf '{}\n' > "$SETTINGS_SRC"
-  ok "created $SETTINGS_SRC"
+# Never fabricate this file: installing a placeholder would wipe the real settings.
+if [[ ! -s "$SETTINGS_SRC" ]]; then
+  err "$SETTINGS_SRC is missing or empty"
+  info "restore it with: git -C \"$REPO_DIR\" checkout -- claude-settings-global.json"
+  exit 1
 fi
 
 mkdir -p "$HOME/.claude"
 
-if [[ -L "$SETTINGS_LINK" && "$(readlink "$SETTINGS_LINK")" == "$SETTINGS_SRC" ]]; then
+backup_settings() {
+  if [[ -f "$SETTINGS_LINK" && ! -L "$SETTINGS_LINK" ]]; then
+    ts="$(date +%Y%m%dT%H%M%S)"
+    mkdir -p "$REPO_DIR/backup"
+    cp -a "$SETTINGS_LINK" "$REPO_DIR/backup/settings.json.$ts"
+    warn "backed up existing settings → backup/settings.json.$ts"
+  fi
+}
+
+if [[ "$install_choice" == "1" ]]; then
+  # Option 1 doesn't install agent-status.sh (setup-zellij.sh does, for option 3),
+  # so instead of a symlink it merges the repo settings, minus hooks, into a real
+  # file. Keys other tools added (e.g. Geordie's plugin entries) are kept.
+  backup_settings
+  tmp="$SETTINGS_LINK.tmp.$$"
+  if ! python3 -I -c '
+import json, os, sys
+src, dst = sys.argv[1], sys.argv[2]
+with open(src) as f:
+    repo = json.load(f)
+merged = {}
+if os.path.isfile(dst) and not os.path.islink(dst):
+    try:
+        with open(dst) as f:
+            merged = json.load(f)
+    except ValueError:
+        merged = {}
+    if not isinstance(merged, dict):
+        merged = {}
+for key, val in repo.items():
+    if isinstance(val, dict) and isinstance(merged.get(key), dict):
+        merged[key] = {**merged[key], **val}
+    else:
+        merged[key] = val
+merged.pop("hooks", None)
+json.dump(merged, sys.stdout, indent=2)
+print()
+' "$SETTINGS_SRC" "$SETTINGS_LINK" > "$tmp"; then
+    rm -f "$tmp"
+    err "failed to build $SETTINGS_LINK — left it untouched"
+    exit 1
+  fi
+  # rm first so mv never writes through a symlink into the repo
+  rm -f "$SETTINGS_LINK"
+  mv "$tmp" "$SETTINGS_LINK"
+  ok "settings (no hooks)  →  $SETTINGS_LINK"
+elif [[ -L "$SETTINGS_LINK" && "$(readlink "$SETTINGS_LINK")" == "$SETTINGS_SRC" ]]; then
   ok "settings already linked  →  $SETTINGS_LINK"
 elif [[ -e "$SETTINGS_LINK" || -L "$SETTINGS_LINK" ]]; then
   warn "$SETTINGS_LINK already exists"
   printf "  Replace it with a symlink to claude-settings-global.json? [y/N]: "
   read -r reply
   if [[ "$reply" =~ ^[Yy]$ ]]; then
-    if [[ -f "$SETTINGS_LINK" && ! -L "$SETTINGS_LINK" ]]; then
-      ts="$(date +%Y%m%dT%H%M%S)"
-      mkdir -p "$REPO_DIR/backup"
-      cp -a "$SETTINGS_LINK" "$REPO_DIR/backup/settings.json.$ts"
-      warn "backed up existing settings → backup/settings.json.$ts"
-    fi
+    backup_settings
     rm -f "$SETTINGS_LINK"
     ln -s "$SETTINGS_SRC" "$SETTINGS_LINK"
     ok "settings  →  $SETTINGS_LINK"
@@ -196,12 +249,13 @@ fi
 if [[ "$install_choice" == "3" ]]; then
   header "Linking shell config"
   SHELL_CONFIG_DIR="$REPO_DIR/shell-config"
-  mapfile -t CONFIG_FILES < <(find "$SHELL_CONFIG_DIR" -mindepth 1 -maxdepth 1 -type f 2>/dev/null | sort)
+  list_shell_configs() { find "$SHELL_CONFIG_DIR" -mindepth 1 -maxdepth 1 -type f 2>/dev/null | sort; }
+  read_lines CONFIG_FILES list_shell_configs
   if [[ ${#CONFIG_FILES[@]} -eq 0 ]]; then
     warn "No config file in $SHELL_CONFIG_DIR — skipping"
   elif [[ ${#CONFIG_FILES[@]} -gt 1 ]]; then
     err "Expected exactly one config file in $SHELL_CONFIG_DIR, found ${#CONFIG_FILES[@]}:"
-    for c in "${CONFIG_FILES[@]}"; do info "• $(basename "$c")"; done
+    for c in ${CONFIG_FILES[@]+"${CONFIG_FILES[@]}"}; do info "• $(basename "$c")"; done
     exit 1
   else
     cfg="${CONFIG_FILES[0]}"
