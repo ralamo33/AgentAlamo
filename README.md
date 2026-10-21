@@ -1,4 +1,7 @@
-# Improve your AI workflows by 1% everyday
+# Get Started
+Run the setup.sh bash script. Choose 1 if you just want the plans as html. Use the canvas skill to create a html plan.
+
+## Improve your AI workflows by 1% everyday
 Track your skills, tools & config in one place with version control. 
 This reduces the cost of updates, it all happens in one place and can be easily shared.
 Uses symlinks to link files here to your global config
