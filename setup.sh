@@ -96,9 +96,9 @@ info "  1) Canvas skills only (${CANVAS_SKILL_NAMES[*]})"
 info "  2) Skills only"
 info "  3) Everything"
 echo ""
-printf "  Choose [1/2/3] (default: 2): "
+printf "  Choose [1/2/3] (default: 1): "
 read -r install_choice
-install_choice="${install_choice:-2}"
+install_choice="${install_choice:-1}"
 
 # ── install skills ───────────────────────────────────────────────────────────
 header "Linking skills"

@@ -8,6 +8,7 @@ Uses symlinks to link files here to your global config
 - contains a tool to render claude plans as an editable webpage
 - contains several skills i found useful
 - contains hooks to rename zellij tabs based on agents progress: yellow working, red needs your input
+- setup option 3 (Everything) uses the [OpenScreen](https://github.com/getopenscreen/openscreen) `openscreen-demo` skill as part of its stack, for recording demo videos
 
 ## Structure
 - use skills-global for skills you want to share across work & personal

@@ -248,10 +248,21 @@
     ]
   },
   "enabledPlugins": {
-    "figma@claude-plugins-official": false,
     "linear@claude-plugins-official": false,
     "Notion@claude-plugins-official": false,
-    "typescript-lsp@claude-plugins-official": true
+    "typescript-lsp@claude-plugins-official": true,
+    "geordie-ai@geordie-ai-local": true,
+    "notion@anthropic-plugin-directory": true,
+    "linear@anthropic-plugin-directory": true,
+    "slack@anthropic-plugin-directory": true
+  },
+  "extraKnownMarketplaces": {
+    "geordie-ai-local": {
+      "source": {
+        "source": "directory",
+        "path": "/Users/ralamo/.geordie/Claude/plugin/0.25.0/marketplace"
+      }
+    }
   },
   "alwaysThinkingEnabled": true,
   "effortLevel": "medium",

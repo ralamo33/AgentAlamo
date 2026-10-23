@@ -62,6 +62,8 @@ Split a single large PR into a clean stack of smaller Graphite PRs, each represe
    have to ask for each one individually.
    ```
 
+   For Nightingale (CLINOPS) work, each sub-PR needs its own sub-ticket under a parent ticket. Propose them with the `nightingale-ticket` skill alongside this plan.
+
    Wait for the user to approve the plan and grant permissions before proceeding.
 
 ### Phase 2: Prepare and execute the split

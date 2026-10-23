@@ -13,7 +13,7 @@ description: Publish completed work as a PR. Use when the user says "publish", "
 
 3. **Stage, commit, push.** Only do what's needed based on current state. Create branch if needed: `ryan/<two-or-three-descriptive-words>` (e.g., `ryan/auth-agent-role`). Run pre-commit hooks normally — if they fail, read the errors, make the necessary edits to fix them, re-stage, and commit again. Do NOT use `--no-verify`.
 
-4. **Assess complexity.** If the diff touches too many unrelated concerns or would be hard to review as one PR, tell the user you recommend splitting and wait for their response. If they agree, use the `pr-splitter` skill.
+4. **Assess complexity.** If the diff touches too many unrelated concerns or would be hard to review as one PR, tell the user you recommend splitting and wait for their response. If they agree, use the `pr-splitter` skill. For Nightingale (CLINOPS) work, treat ~200 meaningful lines (excluding tests and generated code) as the threshold, and confirm the PR has exactly one ticket; if it has none, propose one with the `nightingale-ticket` skill before creating the PR.
 
 5. **Create PR.** Use the `pr-description` skill to generate the title and body, then `gh pr create`.
 

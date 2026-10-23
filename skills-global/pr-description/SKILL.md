@@ -11,6 +11,8 @@ Do NOT ask the user what the description should be. Autonomously read the diff (
 
 The PR title. 2-5 words, short sentence fragment. (e.g., "Add Auth Agent Role")
 
+For Nightingale (CLINOPS) work, the title must start with the ticket identifier so the Linear bot links it: `feat(CLINOPS-123): short description`. See `nightingale-ticket`.
+
 ## Body
 
 ```
